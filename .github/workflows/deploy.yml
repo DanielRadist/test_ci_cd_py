@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  # Запуск только при публиковании нового релиза
+  release:
+    types: [published]
+
+jobs:
+
+  build:
+
+    runs-on: [ubuntu-latest]
+    env:
+      LOGIN: ${{secrets.DOCKER_LOGIN}}
+      NAME: ${{secrets.DOCKER_NAME}}
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Login to Docker
+      run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+    
+    - name: Build the Docker image
+      run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile .
+      
+    - name: Push image to Docker
+      run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
