@@ -20,7 +20,7 @@ jobs:
       run:  echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
     
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build -t $LOGIN/$NAME:${GITHUB_REF:11} -f Dockerfile .
       
     - name: Push image to Docker
       run: docker push $LOGIN/$NAME:${GITHUB_REF:11}
