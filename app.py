@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def hello():
-    return 'Hello World!'
+    return 'Hello World! Привет!'
 
 def main():
     app.run(host='0.0.0.0', port=8080)
